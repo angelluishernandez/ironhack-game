@@ -17,7 +17,7 @@ class Game {
       this.move()
 
       // this.checkCollisions()
-      this.checkfinish()
+      // this.checkfinish()
       
 
       if(this.tick++ > 100){
@@ -43,9 +43,9 @@ class Game {
   }
 
 
-  checkfinish(){
-    this.enemy.finish()
-  }
+  // checkfinish(){
+  //   this.enemy.finish()
+  // }
 
   // checkCollisions(){
   //   this.enemy.collide(this.obstacle)
