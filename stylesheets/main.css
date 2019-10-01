@@ -1,0 +1,19 @@
+/* .my-canvas{
+  border: 50px, dotted, grey;
+  background: red;
+  width: 1000;
+  height: 800;
+  
+  
+}
+
+
+#game-board{
+  width: 100%;
+  background: blue;
+} */
+
+
+canvas{
+  border: 3px dotted grey  
+}
