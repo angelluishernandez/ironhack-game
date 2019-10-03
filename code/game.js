@@ -1,14 +1,13 @@
-class Game {
+class Game{
   constructor(ctx) {
     this.ctx = ctx;
-
-    //this.bg = new Board(ctx);
-    this.enemy = new Enemy(ctx)
-    // this.obstacle = new Obstacle(ctx)
-
-    this.intervalId = null;
-
+    this.intervalId = null
     this.tick = 0
+    this.board = new Board(ctx)
+
+    this.enemy = new Enemy(ctx)
+
+    
   }
   run() {
     this.intervalId = setInterval(() => {
@@ -16,8 +15,7 @@ class Game {
       this.draw() 
       this.move()
 
-      // this.checkCollisions()
-      // this.checkfinish()
+      
       
 
       if(this.tick++ > 100){
@@ -32,23 +30,17 @@ class Game {
   draw() {
     
     this.enemy.draw()
-    // this.obstacle.draw()
-    //this.bg.drawBoardLimits();
+    this.board.draw()
+    
   }
 
 
 
   move(){
+    
     this.enemy.move()
   }
 
 
-  // checkfinish(){
-  //   this.enemy.finish()
-  // }
 
-  // checkCollisions(){
-  //   this.enemy.collide(this.obstacle)
-
-  // }
 }
