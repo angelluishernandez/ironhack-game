@@ -4,7 +4,7 @@ class Game{
     this.intervalId = null
     this.tick = 0
     this.board = new Board(ctx)
-
+    this.tower = new Tower(ctx)
     this.enemy = new Enemy(ctx)
 
     
@@ -29,9 +29,11 @@ class Game{
   }
   draw() {
     
-    this.enemy.draw()
-    this.board.draw()
     
+    // this.board.draw()
+    
+    this.enemy.draw()
+    // this.tower.draw()
   }
 
 
