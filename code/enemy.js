@@ -3,13 +3,13 @@ class Enemy {
     this.ctx = ctx
     this.waypoints = [
       
-      {x: 0,y: 100, current:false},
-      {x: 700,y: 100, current: true },
-      {x: 700,y: 300, current:true },
-      {x: 100,y: 300, current:true },
-      {x: 100,y: 500, current:true },
-      {x: 300,y: 500, current:true },
-      {x: 800,y: 500, current:true },
+      
+      {x: 700,y: 100, },
+      {x: 700,y: 300, },
+      {x: 100,y: 300, },
+      {x: 100,y: 500, },
+      {x: 300,y: 500, },
+      {x: 800,y: 500, },
 
 
   ]
@@ -19,12 +19,12 @@ class Enemy {
     this.w = 50
     this.h = 50
     this.waypointIndex = 0
-    this.speed = 0.5
+    this.speed = 2
     this.vx = 0
     this.vy = 0
 
-    this.distX = Math.abs(this.waypoints[this.waypointIndex].x - this.waypoints[this.waypointIndex + 1].x)
-    this.distY = Math.abs(this.waypoints[this.waypointIndex].y - this.waypoints[this.waypointIndex + 1].y)
+    this.distX = 0
+    this.distY = 0
     this.currentPointX = 0
     this.currentPointY = 0
 
@@ -55,13 +55,16 @@ draw(){
 
 
 move(){
+// console.log(this.distX + " XXXXXXXXXXXXXXXXXXXXXXX")
+// console.log(this.distY + "YYYYYYYYYYYYYYYYYYYYYY")
+console.log(this.waypoints[this.waypointIndex + 1].y)
+
+this.currentPointX = this.waypoints[this.waypointIndex + 1].x - this.x
+this.currentPointY = this.waypoints[this.waypointIndex + 1].y - this.y
 
 
-
-
-
-this.currentPointX = this.distX - this.x
-this.currentPointY = this.distY - this.y
+this.distY = this.waypoints[this.waypointIndex + 1].y - this.currentPointY
+this.distX = this.waypoints[this.waypointIndex + 1].x - this.currentPointX
 console.log(this.currentPointX)
 this.pointReached()
 
@@ -73,14 +76,14 @@ this.pointReached()
 
 moveRight(){
 
-  if(this.currentPointX <= this.waypoints[this.waypointIndex].x){ 
+  if(this.waypoints[this.waypointIndex].x > this.currentPointX){ 
     this.y = this.waypoints[this.waypointIndex].y
     this.vx = this.speed
     this.x += this.vx
-
-    console.log("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR")
+   
+    // console.log("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR")
+  
   }
-
 }
 
 
@@ -91,15 +94,20 @@ moveRight(){
 
 moveDown(){
 
-  if(this.currentPointY <= this.waypoints[this.waypointIndex].y){
-    this.x = this.waypoints[this.waypointIndex].x
-    
-    
+  if(this.waypoints[this.waypointIndex].y > this.currentPointY){
+    this.x = this.waypoints[this.waypointIndex].x    
     this.vy = this.speed
     this.y += this.vy
+  
 
-    console.log("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD")
-}
+    // console.log("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD")
+
+
+
+  }
+ 
+    
+
 }
 
 
@@ -155,28 +163,32 @@ pointReached(){
 
 
 
-
-  if(this.waypoints[this.waypointIndex].y < this.waypoints[this.waypointIndex + 1].y && this.waypoints[this.waypointIndex].x <= this.x){
+  if(this.currentPointY <= this.waypoints[this.waypointIndex + 1].y && this.currentPointX <= this.waypoints[this.waypointIndex + 1].x){
     this.moveDown()
 
 
 
-  }
+  // }
 
   // if (this.distY > -20 && this.x < this.waypoints[this.waypointIndex].x ){
   //   this.moveLeft()
   // }
 
-  if(this.waypoints[this.waypointIndex].x < this.waypoints[this.waypointIndex].x && this.waypoints[this.waypointIndex].y <= this.y){
+  if(this.currentPointX <= this.waypoints[this.waypointIndex + 1].x && this.currentPointY <= this.waypoints[this.waypointIndex +1].y){
+    // this.currentPointY <= this.waypoints[this.waypointIndex + 1].x && !this.currentPointY > this.waypoints[this.waypointIndex].y){
     this.moveRight()
 
 
+
+    // console.log( "CURRENT POINT" + this.currentPointX)
   }
 
 
-console.log(this.waypointIndex)
+if(this.distX <= 0 && this.distY <= 0){
 
-this.waypointIndex += 1
+  this.waypointIndex += 1
+  console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" + this.waypointIndex)
+}
 
 
 
@@ -188,7 +200,7 @@ this.waypointIndex += 1
 
 ////////////////////////////
 
-// Add up here to the index of waypoints.
+// Add  here to the index of waypoints.
 
 ///////////////////////////////
 
@@ -410,7 +422,7 @@ this.waypointIndex += 1
 //     }
 
 
-    
+}  
 
 
 
