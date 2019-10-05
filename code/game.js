@@ -4,7 +4,7 @@ class Game{
     this.intervalId = null
     this.tick = 0
     this.board = new Board(ctx)
-    this.tower = new Tower(ctx)
+    // this.tower = new Tower(ctx)
     this.enemy = new Enemy(ctx)
 
     
@@ -16,7 +16,7 @@ class Game{
       this.move()
 
       
-      
+      // this.checkCollision()
 
       if(this.tick++ > 100){
         this.tick = 0
@@ -30,7 +30,7 @@ class Game{
   draw() {
     
     
-    // this.board.draw()
+    this.board.draw()
     
     this.enemy.draw()
     // this.tower.draw()
@@ -43,6 +43,11 @@ class Game{
     this.enemy.move()
   }
 
+// checkCollision(){
+//   if(this.enemy.x + this.enemy.w === this.tower.x - this.tower.w){
 
+//     delete this.enemy
+//   }
+// }
 
 }

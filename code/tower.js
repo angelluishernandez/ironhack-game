@@ -1,13 +1,11 @@
 class Tower{
   constructor(ctx){
     this.ctx = ctx
-    this.x = 100
-    this.y = 100
-    this.w = 20
-    this.h = 20
-    this.r = this.w * 2
-    this.cX = this.x / 2
-    this.cY = this.y / 2
+    this.x = 500
+    this.y = 400
+    this.w = 50
+    this.h = 50
+
   }
 
   draw(){
@@ -18,8 +16,6 @@ class Tower{
       this.h,
      
     )
-    this.ctx.fillStyle("green")
-    this.radius()
   }
 
 // radius(){

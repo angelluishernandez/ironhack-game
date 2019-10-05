@@ -2,67 +2,42 @@ class Enemy {
   constructor(ctx){
     this.ctx = ctx
     this.waypoints = [
-      {x: 0,y: 100, current: true},
-     {x: 700,y: 100, current: false },
-     {x: 700,y: 300, current: false },
-     {x: 100,y: 300, current: false },
-     {x: 100,y: 500, current: false },
-     {x: 300,y: 500, current: false },
-     {x: 800,y: 500, current: false },
-
+      
+      {x: 0,y: 100, current:false},
+      {x: 700,y: 100, current: true },
+      {x: 700,y: 300, current:true },
+      {x: 100,y: 300, current:true },
+      {x: 100,y: 500, current:true },
+      {x: 300,y: 500, current:true },
+      {x: 800,y: 500, current:true },
 
 
   ]
 
-    this.x = this.waypoints[0].x
-    this.y = this.waypoints[0].y
-    this.offset = Math.random(14)
+    this.x = 0
+    this.y = 100
     this.w = 50
     this.h = 50
-    this.nextWaypoint = 0
-    this.speed = 2
+    this.waypointIndex = 0
+    this.speed = 0.5
     this.vx = 0
     this.vy = 0
 
+    this.distX = Math.abs(this.waypoints[this.waypointIndex].x - this.waypoints[this.waypointIndex + 1].x)
+    this.distY = Math.abs(this.waypoints[this.waypointIndex].y - this.waypoints[this.waypointIndex + 1].y)
+    this.currentPointX = 0
+    this.currentPointY = 0
 
 
 
 
 
+  }
 
 
-
-
-
-
-  //   // this.waypoint = false
-  //   this.waypointIndex = 0
-  //   this.pastWaypoints = []
-    
-
-  // // Next position
-  // this.nextPositionX = this.waypoints[0].x
-  // this.nextPositionY = this.waypoints[0].y
-
-  // // Distance
-
-
-  // this.distanceX = this.nextPositionX - this.x
-  // this.distanceY = this.nextPositionY - this.y
-
-
-}
-
-// const distX = (this.path[this.pathIndex][0] - this.x0) / 100
-//     const distY = (this.path[this.pathIndex][1] - this.y0) / 100
-//     this.x += distX
-//     this.y += distY
-
-//     if (this.x >= this.path[this.pathIndex][0] && this.y >= this.path[this.pathIndex][1]) {
-//       this.x0 = this.path[this.pathIndex][0]
-//       this.y0 = this.path[this.pathIndex][1]
-//       this.pathIndex += 1
-//     }
+////////////////////////////////////////////////////////////////
+// Draw enemy
+///////////////////////////////////////////////////////////////
 
 draw(){
 
@@ -77,19 +52,150 @@ draw(){
   )
 
 }
+
+
 move(){
 
-  if (this.waypointReached()){
-    console.log("entra")
-    if(this.nextWaypoint()){
-      return finish()
-    }
-  
-  }else{
-    this.x += this.speed
+
+
+
+
+this.currentPointX = this.distX - this.x
+this.currentPointY = this.distY - this.y
+console.log(this.currentPointX)
+this.pointReached()
+
+}
+
+//////////////////////////
+//Movement to the right
+//////////////////////////
+
+moveRight(){
+
+  if(this.currentPointX <= this.waypoints[this.waypointIndex].x){ 
+    this.y = this.waypoints[this.waypointIndex].y
+    this.vx = this.speed
+    this.x += this.vx
+
+    console.log("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR")
+  }
+
+}
+
+
+
+//////////////////////////
+//Movement to the bottom
+//////////////////////////
+
+moveDown(){
+
+  if(this.currentPointY <= this.waypoints[this.waypointIndex].y){
+    this.x = this.waypoints[this.waypointIndex].x
     
+    
+    this.vy = this.speed
+    this.y += this.vy
+
+    console.log("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD")
+}
+}
+
+
+//////////////////////////
+//Movement to the left
+//////////////////////////
+
+// moveLeft(){
+//   if(this.distX <= this.x && this.distY > this.y){
+//     this.vx = 0
+    
+    
+//     this.vy = this.speed
+//     this.x += this.vy
+
+//     console.log("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL")
+//   }
+
+// }
+
+
+
+
+//////////////////////////
+//Movement to the upper side
+//////////////////////////
+// moveUp(){
+
+//   if(this.y >= this.distY){
+//     this.vx = 0
+    
+    
+//     this.vy = this.speed
+//     this.y -= this.vy
+
+
+//     console.log("UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU")
+//   }
+  
+
+
+// }
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////
+/// When a point is reached it executes the corresponding function to turn the object in the right direction
+/////////////////////////////////////////////////////////////////////////////////////
+
+pointReached(){
+
+
+
+
+  if(this.waypoints[this.waypointIndex].y < this.waypoints[this.waypointIndex + 1].y && this.waypoints[this.waypointIndex].x <= this.x){
+    this.moveDown()
+
+
 
   }
+
+  // if (this.distY > -20 && this.x < this.waypoints[this.waypointIndex].x ){
+  //   this.moveLeft()
+  // }
+
+  if(this.waypoints[this.waypointIndex].x < this.waypoints[this.waypointIndex].x && this.waypoints[this.waypointIndex].y <= this.y){
+    this.moveRight()
+
+
+  }
+
+
+console.log(this.waypointIndex)
+
+this.waypointIndex += 1
+
+
+
+
+
+
+
+}
+
+////////////////////////////
+
+// Add up here to the index of waypoints.
+
+///////////////////////////////
+
+
+
+
+
 
 }
 
@@ -98,48 +204,52 @@ move(){
 
 
 
-nextWaypoint(){
 
-  if(!this.waypoint.x){
-    this.waypoint = Object.assign({}, this.waypoints[this.waypointIndex])
-    this.x = this.waypoint.x
-    this.y = this.waypoint.y
-  }
-  const previousX = this.waypoint.x
-  const previousY  = this.waypoint.y
 
-  this.waypointIndex++
-  if (!this.waypoints[this.waypointIndex]) return false
-  this.waypoint = Object.assign({}, this.waypoints[this.waypointIndex])
 
-  if(previousX === this.waypoint.x){
-    this.velocity.x = 0
 
-  }else{
-    this.velocity.x = (this.x < this.waypoint.x ? this.speed : -this.speed)
-  }
 
-if(previousY === this.waypoint.y){
-    this.velocity.y = 0
 
-  }else{
-    this.velocity.y = (this.y < this.waypoint.y ? this.speed : -this.speed)
-  }
-return true
-}
-waypointReached(){
-  
-  return(
-  (this.vx > 0 && this.x >= this.waypoint.x) ||
-  (this.vx < 0 && this.x <= this.waypoint.x) ||
-  (this.vy > 0 && this.y >= this.waypoint.y) ||
-  (this.vy < 0 && this.y <= this.waypoint.y) 
-  
-  
-  
-  )
-  
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -270,6 +380,34 @@ waypointReached(){
 // }
 
 
+  //   // this.waypoint = false
+  //   this.waypointIndex = 0
+  //   this.pastWaypoints = []
+    
+
+  // // Next position
+  // this.nextPositionX = this.waypoints[0].x
+  // this.nextPositionY = this.waypoints[0].y
+
+  // // Distance
+
+
+  // this.distanceX = this.nextPositionX - this.x
+  // this.distanceY = this.nextPositionY - this.y
+
+
+
+
+// const distX = (this.path[this.pathIndex][0] - this.x0) / 100
+//     const distY = (this.path[this.pathIndex][1] - this.y0) / 100
+//     this.x += distX
+//     this.y += distY
+
+//     if (this.x >= this.path[this.pathIndex][0] && this.y >= this.path[this.pathIndex][1]) {
+//       this.x0 = this.path[this.pathIndex][0]
+//       this.y0 = this.path[this.pathIndex][1]
+//       this.pathIndex += 1
+//     }
 
 
     
@@ -280,6 +418,5 @@ waypointReached(){
 
 
 
-}
 
 
