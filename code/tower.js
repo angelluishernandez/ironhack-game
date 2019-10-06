@@ -19,35 +19,29 @@ class Tower{
   }
 
 
-  shoot(){
+  
 
-
-
-
-
-  }
-
-
+}
   /////////////////////////////////////////////////////////////////////////////////////////
   // Add Tower method - check event listener in script.js for reference
   /////////////////////////////////////////////////////////////////////////////////////////
 
-  addTower(){
+  // addTower(){
     
-    function isIntersect(point, circle) {
-      return Math.sqrt((point.x-circle.x) ** 2 + (point.y - circle.y) ** 2) < circle.radius;
-    }
+  //   function isIntersect(point, circle) {
+  //     return Math.sqrt((point.x-circle.x) ** 2 + (point.y - circle.y) ** 2) < circle.radius;
+  //   }
 
-    this.towers.forEach((tower)=>{
-      if(isIntersect(mousePoint, tower)){
-
-
-
-    }
+  //   this.towers.forEach((tower)=>{
+  //     if(isIntersect(mousePoint, tower)){
 
 
 
-  }
+  //   }
+
+
+
+  // }
 
 // radius(){
 
@@ -60,7 +54,7 @@ class Tower{
 //       2 * Math.PI);
 //     this.ctx.closePath()
 // }
-}
-}
+
+// }
 
 
