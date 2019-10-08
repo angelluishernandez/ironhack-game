@@ -4,18 +4,20 @@ class Tower{
     this.x = 500
     this.y = 500
     this.r = 90
+    this.towerX,
+    this.towerY
 
   }
 
-draw(){
+draw(x, y){
 
- console.log(this.x, this.y)
+//  console.log(this.towerX, this.towerY)
 
 this.addTower()
 this.ctx.beginPath()
 this.ctx.arc(
- this.x, 
-  this.y, 
+ this.towerY, 
+this.towerY, 
   this.r, 
   0, 
   2 * Math.PI
@@ -41,10 +43,10 @@ addTower(){
 onDown(e){
 
 let points = e.target.getBoundingClientRect()
-const towerX = e.clientX - points.left
-const towerY = e.clientY - points.top
+this.towerX = e.clientX - points.left
+this.towerY = e.clientY - points.top
   
-  console.log(towerX, towerY)
+  // console.log(this.towerX, this.towerY)
 
 }
 
