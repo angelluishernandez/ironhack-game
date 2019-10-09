@@ -79,7 +79,6 @@ class Enemy {
   }
 
   enemyCrossed(){
-      // console.log(xPixels);
 
     if(this.x >= 1001){
       console.log("entra")

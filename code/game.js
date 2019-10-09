@@ -1,13 +1,25 @@
 class Game {
-  constructor(ctx) {
+  constructor(ctx, canvas) {
     this.ctx = ctx;
+    this.canvas = canvas;
     this.intervalId = null;
     this.tick = 0;
     this.board = new Board(ctx);
-    this.tower = new Tower(ctx);
+
+    // Towers
+    this.posTowerX,
+    this.posTowerY 
+    this.tower = new Tower(ctx, this.posTowerX, this.posTowerY);
+    // this.events = new Events(ctx);
+    this.towers = []
+ 
+    
+
+    // Enemies
     this.enemy = new Enemy(ctx);
     this.enemies = [];
     this.enemiesCrossed = [];
+
     this.lives = 5;
   }
   run() {
@@ -16,6 +28,8 @@ class Game {
       this.draw();
       this.move();
       this.checkEnemyPosition();
+
+      this.placeTower(this.posTowerX, this.posTowerY);
 
       // this.checkCollision()
 
@@ -30,9 +44,9 @@ class Game {
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
   }
   draw() {
-    this.board.draw();
-    this.tower.draw();
-    this.enemies.forEach(enemy => enemy.draw());
+    // this.board.draw();
+    this.towers.forEach(tower => tower.draw());
+    // this.enemies.forEach(enemy => enemy.draw());
   }
 
   move() {
@@ -49,6 +63,20 @@ class Game {
 
   checkEnemyPosition() {
     this.enemy.enemyCrossed();
+  }
+
+  placeTower() {
+    this.ctx.canvas.onmousedown = function(e) {
+      let rect = canvas.getBoundingClientRect();
+      this.posTowerX = e.clientX - rect.left;
+      this.posTowerY = e.clientY - rect.top;
+
+      console.log(this.posTowerX, this.posTowerY);
+      const newTower = new Tower(this.ctx, this.posTowerX, this.posTowerY);
+      console.log(newTower)
+      this.towers.push(newTower);
+      console.log("entra");
+    };
   }
 }
 
