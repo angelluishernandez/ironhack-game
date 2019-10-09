@@ -3,21 +3,30 @@ window.onload = function startGame() {
   
   const ctx = canvas.getContext("2d")
 
-  
-  canvas.addEventListener("onclick", function(){
-    game.buildTower()
 
 
-
-  })
-
-
-  const game = new Game(ctx, canvas)
+  const game = new Game(ctx)
   game.run()
   
+
   
+  const mouseClick = canvas.onmousedown = function(e){
+
+    const rect = canvas.getBoundingClientRect();
+    return  {
+      posTowerX : e.clientX - rect.left,
+      posTowerY : e.clientY - rect.top
+
+
+    }
+      
+      
+  }
+  canvas.addEventListener("mousedown", game.placeTower(mouseClick.posTowerX, mouseClick.posTowerY))
 
 
   
 }
+
+
 

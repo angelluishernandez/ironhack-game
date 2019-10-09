@@ -15,12 +15,13 @@ class Enemy {
     this.y = 100;
     this.w = 20;
     this.h = 20;
-    this.speed = 10;
+    this.speed = 2;
 
   }
 
   draw() {
     this.ctx.fillRect(this.x, this.y, this.w, this.h);
+    this.ctx.fillStyle ="#e1cc4f"
   }
 
   move() {
