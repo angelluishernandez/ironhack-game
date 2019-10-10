@@ -1,20 +1,24 @@
 class Tower{
-  constructor(ctx){
-  // constructor(ctx, x, y){ // This is the final constructor
+  constructor(ctx, x, y){
     this.ctx = ctx
     this.canvas = canvas
     // this.events = new Events(ctx)
-    this.x = 250
-    this.y = 500
+    this.x = x
+    this.y = y
     
     this.r = 90
     this.r2 = 20
 
-    
-  }
-draw(){
-// draw(x, y){ // this line will be included in the final version
+    this.target = {}
 
+  
+
+    this.rateOfFire = 1000 / 60
+  }
+
+
+
+draw(x, y){ 
 
 
 
@@ -22,8 +26,8 @@ draw(){
   
   this.ctx.beginPath()
   this.ctx.arc(
-    this.x, 
-    this.y, 
+   x, 
+   y, 
     this.r, 
     0, 
     2 * Math.PI
@@ -62,6 +66,11 @@ draw(){
 
 
 
+}
+
+
+
+
 
 
   
@@ -72,7 +81,7 @@ draw(){
 
 
 
-}
+
 
 
 

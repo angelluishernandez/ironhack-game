@@ -7,26 +7,39 @@ window.onload = function startGame() {
 
   const game = new Game(ctx)
   game.run()
+
+
+
+canvas.addEventListener("mousedown", getMousePosition, false) 
+canvas.addEventListener("mousedown", function(e){
+  const coordinates  = getMousePosition(e)
+  game.towers.push(new Tower(game.ctx, coordinates.x, coordinates.y))
+  console.log(coordinates)
+
+
+}, false)
+
+function getMousePosition(e){
+
+  const rect = canvas.getBoundingClientRect()
+
+  game.mouseCoordinates = {
+
+    x : e.clientX - rect.left,
+    y : e.clientY - rect.left
+
+  }
+return game.mouseCoordinates
+}
   
 
-  
-  const mouseClick = canvas.onmousedown = function(e){
-
-    const rect = canvas.getBoundingClientRect();
-    return  {
-      posTowerX : e.clientX - rect.left,
-      posTowerY : e.clientY - rect.top
-
-
-    }
       
       
   }
-  canvas.addEventListener("mousedown", game.placeTower(mouseClick.posTowerX, mouseClick.posTowerY))
 
 
   
-}
+
 
 
 

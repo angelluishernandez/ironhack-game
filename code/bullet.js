@@ -1,64 +1,37 @@
-class Bullet{
-  constructor(ctx, x1, x2, y1, y2){
+class Bullet {
+  constructor(ctx, x, y, target) {
+    this.ctx = ctx;
+    this.x = x;
+    this.y = y;
+    this.r = 20;
+    this.target = target;
 
-    this.ctx = ctx
-    this.x1
-    this.x2
-    this.y1
-    this.y2
-
-
+    this.speed = 5;
   }
 
-
-
-
-
-  draw(x1, x2, y1, y2){
-    this.ctx.strokeStyle = "#2a6478"
-    this.ctx.lineWith = 10
-    this.ctx.beginPath()
-    this.ctx.moveTo(x1, y1);
-    this.ctx.lineTo(x2, y2);
-    
-    this.ctx.stroke();
-
-
-
+  draw() {
+    this.ctx.beginPath();
+    this.ctx.arc(this.x, this.y, this.r, 0, 2 * Math.PI);
   }
 
-
-
-
+  move() {
+    const distX = this.target.x + this.target.w / 2 - this.x;
+    const distY = this.target.y + this.target.h / 2 - this.y;
+    const distance = Math.sqrt(distX * distX + distY * distY);
+    this.x = this.x + (this.speed * distX) / distance;
+    this.y = this.y + (this.speed * distY) / distance;
+  }
 
   // shootLaser(){
   //   this.enemies.forEach(enemy => {
   //     this.bulletsPositions.push({
   //       bulletX: enemy.x - enemy.w / 2,
   //       bulletY: enemy.y - enemy.h / 2
-        
-        
+
   //     })
-  
-  
-  
-  
+
   //   })
   //   if(this.enemy.x <= this.tower.r){
-      
-  
-    // }
-  
 
-    
-
-
-
-
-
-
-
-
-
-
+  // }
 }
