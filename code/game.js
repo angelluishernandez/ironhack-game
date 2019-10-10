@@ -7,57 +7,37 @@ class Game {
     this.board = new Board(ctx);
 
     // Towers
-    this.posTowerX,
-    this.posTowerY 
-    this.tower = new Tower(ctx) // This one has to be removed after the test with firing are done
-
-
-    // mouse position
-
-    this.mouseCoordinates = {},
-
-    ////////////////////////////////////////////////////////////////////
-    //Add this one again when the class is remade
-    /////////////////////////////////////////////////////////////////
-    // this.tower = new Tower(ctx, this.posTowerX, this.posTowerY);
-    ////////////////////////////////////////////////////////////////////
-    //
-    /////////////////////////////////////////////////////////////////
-    // this.events = new Events(ctx);
+    this.posTowerX, this.posTowerY;
+    this.tower = new Tower(ctx); // This one has to be removed after the test with firing are done
+    this.waypointIndex = 0;
     this.towers = []
- 
-    
 
+  
     // Enemies
-    this.enemy = new Enemy(ctx);
     this.enemies = [];
     this.enemiesCrossed = [];
 
     this.lives = 5;
 
-
     // laser positions
 
-    this.bullets = []
+    this.bullets = [];
 
-    
+    // Is Down
 
-    
-
-    // Is Down 
-
-    this.isDown = false
+    this.isDown = false;
   }
   run() {
     this.intervalId = setInterval(() => {
       this.clear();
       this.draw();
       this.move();
+      // this.inRange(this.towers, this.enemies)
       // this.checkEnemyPosition();
       // this.towerShooting()
+      this.shoot()
 
-      this.checkCollision()
-      
+0
       if (this.tick++ > 100) {
         this.tick = 0;
         this.addEnemy();
@@ -71,14 +51,14 @@ class Game {
   draw() {
     this.board.draw();
     this.towers.forEach(tower => tower.draw(tower.x, tower.y));
-    this.tower.draw()
+    this.tower.draw();
     this.enemies.forEach(enemy => enemy.draw());
-    this.bullets.forEach(bullet => bullet.draw())
+    this.bullets.forEach(bullet => bullet.draw());
   }
 
   move() {
     this.enemies.forEach(enemy => enemy.move());
-    this.bullets.forEach(bullet => bullet.move())
+    this.bullets.forEach(bullet => bullet.move(this.enemies[0]));
   }
 
   addEnemy() {
@@ -87,46 +67,82 @@ class Game {
       const enemy = new Enemy(this.ctx);
       this.enemies.push(enemy);
     }
-  // }
+  }
 
-  // placeTower(x, y) {
-  //  this.ctx.canvas.onmousedown = function(){
+  ///////////////////////////////////////////////////////////////////
+  // Checking if tower is in path
 
+  /////////////////////////////////////////////////////////////////////
+
+  checkIfInPath(x, y) {
+    for (let i = 0; i < this.board.waypoints.length - 1; i++) {
+      // check horizontal and moving right
+
+      if (
+        x <= this.board.waypoints[i + 1].x + 40 &&
+        x >= this.board.waypoints[i].x &&
+        y <= this.board.waypoints[i].y + 40 &&
+        y >= this.board.waypoints[i].y - 40
+      ) {
+        return true;
+      }
+
+      // check vertical and moving down
+      else if (
+        y <= this.board.waypoints[i + 1].y + 40 &&
+        y >= this.board.waypoints[i].y &&
+        x <= this.board.waypoints[i].x + 40 &&
+        x >= this.board.waypoints[i].x - 40
+      ) {
+        return true;
+      }
+
+      // check horizonal and moving left
+      else if (
+        x >= this.board.waypoints[i + 1].x + 40 &&
+        x <= this.board.waypoints[i].x &&
+        y <= this.board.waypoints[i].y + 40 &&
+        y >= this.board.waypoints[i].y - 40
+      ) {
+        return true;
+      } 
+    }
+  }
+
+  shoot(){
     
-  //   this.towers.push(new Tower(this.ctx, x, y));
-    
-  //   console.log("entra")
-  //   console.log(this.towers.length)
-  //   console.log(this.towers)
-
-  //  }
-  }   
+    this.enemies.forEach(enemy =>{
+      this.tower.inRange(enemy)
+      
+    })
 
 
-  /////////////////////////////////
-  //Shooting logic
-  //////////////////////////7
+
+  }
+
+/////////////////////////////////
+//Shooting logic
+//////////////////////////
   
-  /// Tower finds targets 
 
-  checkCollision(){
-    for (let i = 0, l = this.enemies.length; i < l; i++){
-     
-     if( this.enemies.x + this.enemies[i].w === this.tower.x + this.tower.r   ||
-       this.enemy.y + this.enemies[i].h === this.tower.x + this.tower.r
-       
-       ) 
-       {
+    
+}
 
-         this.enemies.splice(i, 1)
-         
-       }
-     
-     }
-   
-       
-     }
 
+
+/// towers finds targets
+
+//   checkCollision() {
+//     for (let i = 0, l = this.enemies.length; i < l; i++) {
+//       if (
+//         this.enemies.x + this.enemies[i].w === this.tower.x + this.tower.r ||
+//         this.enemy.y + this.enemies[i].h === this.tower.x + this.tower.r
+//       ) {
+//         this.enemies.splice(i, 1);
+//       }
+//     }
+//   }
+// }
 
 // findTarget(enemies){
 //   // If no enemies within reach
@@ -136,45 +152,41 @@ class Game {
 //       return
 //     }
 //   // Find the first enemy
-  
+
 //   for(let i = 0, l = this.enemies.length; i < l; i++){
-  
+
 //     const distance = (this.enemies[i].x - this.tower.x) * (this.enemies[i].x - this.tower.x ) +
 //       (this.enemies[i].y - this.tower.y) * (this.enemies[i].y -this.tower.y )
 //       if(distance < (this.tower.range * this.tower.range)){
 //         this.tower.target = this.enemies[i]
 //         return
-        
+
 //       }
 //       console.log(this.tower.target)
 //   }
 //     }
-  
 
- 
-  
 //   findShootingVector(){
 //     if(!this.tower.target) return false
 //     const distX = this.tower.target.x - this.tower.x
 //     const distY= this.tower.target.y - this.tower.y
 //     const distance = Math.sqrt(distX * distX + distY * distY)
-  
+
 //     this.tower.firePositionX = this.tower.x + this.tower.r * distX / distance
 //     this.tower.firePositionY = this.tower.y + this.tower.r * distY / distance
 //     console.log("3")
 //   }
-  
+
 //   fire(){
 //     this.tower.rateOfFire--
 //     if(this.tower.target && this.tower.rateOfFire <= 0){
 //       this.bullets.push(new Bullet(this.ctx, this.tower.firePositionX, this.tower.firePositionY, this.tower.target))
 //       console.log(new Bullet)
 //       console.log(this.bullets)
-  
+
 //       console.log("4")
 //     }
-  
-  
+
 //   }
 
 // towerShooting(){
@@ -183,85 +195,35 @@ class Game {
 //     this.findShootingVector()
 //     this.fire()
 
-
 //   })
-
 
 // }
 
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  ///////////////////////////////////////////////////77
-/////////Check this function 
+///////////////////////////////////////////////////77
+/////////Check this function
 //////////////////////////////////////////////////
-  /////////////////////////////////////////////
+/////////////////////////////////////////////
 //   checkEnemyPosition() {
 //     const distanceToEnemyX = (this.enemies[0].x - this.tower.r) - this.tower.r
 //     const distanceToEnemyY = (this.enemies[0].y - this.tower.r) - this.tower.r
 
+//     const distance = Math.sqrt(distanceToEnemyX * distanceToEnemyX +
+//       distanceToEnemyY * distanceToEnemyY);
 
-
-
-//     const distance = Math.sqrt(distanceToEnemyX * distanceToEnemyX + 
-//       distanceToEnemyY * distanceToEnemyY); 
-  
 //     let shootingRate = distance / this.shootingSpeed
-    
+
 //     const xPixels = distanceToEnemyX / shootingRate
 //     const yPixels = distanceToEnemyY / shootingRate
 
-
-
-    
-
-  
 //   }
 
 //   addBullet(){
 //     if(this.inRange()){
 //       const newBullet = new Bullet()
 
-
-
 //     }
 
-
-
-
 //   }
-
 
 //   inRange(){
 //     this.enemies.forEach(enemy =>{
@@ -270,40 +232,23 @@ class Game {
 //         return true
 //       }
 
-
 //     })
-
 
 //   }
 
-
-
-
 // }
 
+// isDown(){
+//   this.ctx.canvas.onmousedown = function(e){
+//     this.isDown = true
 
+//   }
 
+////////////////////////////////////////////////////////////////////////////////////
+//TODO
+///////////////////////////////////////////////////////////////////////////
 
-
-  // isDown(){
-  //   this.ctx.canvas.onmousedown = function(e){
-  //     this.isDown = true
-
-
-  //   }
-
-  ////////////////////////////////////////////////////////////////////////////////////
-  //TODO
-  ///////////////////////////////////////////////////////////////////////////
-
-  
-
-  //   }
-     
-
-  
-  
-
+//   }
 
 // deleteEnemy(){
 //   this.enemies.forEach(function(enemy){

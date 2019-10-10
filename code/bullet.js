@@ -1,12 +1,17 @@
 class Bullet {
-  constructor(ctx, x, y, target) {
+  constructor(ctx, x, y, enemyX, enemyY) {
     this.ctx = ctx;
     this.x = x;
     this.y = y;
+    this.enemyX,
+    this.enemyY
+
     this.r = 20;
     this.target = target;
+    this.vx = 5
+    this.vy = 5
 
-    this.speed = 5;
+    this.speed = 10;
   }
 
   draw() {
@@ -15,11 +20,13 @@ class Bullet {
   }
 
   move() {
-    const distX = this.target.x + this.target.w / 2 - this.x;
-    const distY = this.target.y + this.target.h / 2 - this.y;
-    const distance = Math.sqrt(distX * distX + distY * distY);
-    this.x = this.x + (this.speed * distX) / distance;
-    this.y = this.y + (this.speed * distY) / distance;
+    const dx = this.x - el.x - el.w
+    const dy = this.y - el.y - el.h/2    
+    this.angle = Math.atan2(dy, dx)
+    this.vy = Math.sin (this.angle) * 1.5
+    this.vx = Math.cos (this.angle) * 1.5
+    this.x -= this.vx
+    this.y -= this.vy
   }
 
   // shootLaser(){
@@ -35,3 +42,5 @@ class Bullet {
 
   // }
 }
+
+

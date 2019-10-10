@@ -79,6 +79,9 @@ class Enemy {
     }
   }
 
+
+  
+
   enemyCrossed(){
 
     if(this.x >= 1001){
