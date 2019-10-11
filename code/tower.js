@@ -30,17 +30,8 @@ class Tower {
   inRange(enemy) {
     const distX = this.x - enemy.x - enemy.w / 2;
     const distY = this.y - enemy.y - enemy.w / 2;
-    // const inRange = Math.sqrt(distX * distX + distY * distY) <= this.r
-    if (distX > enemy.w * 2 + this.r || distY > enemy.h * 2 + this.r) {
-      return false;
-    }
-    if (distX <= enemy.w / 2 && distY <= enemy.h / 2) return true;
-
-
-    // const dx = distX - enemy.w / 2
-    // const dy = distY - enemy.h / 2
-
-    // return (dx * dx + dy * dy <= (this.r * this.r))
+    const inRange = Math.sqrt(distX * distX + distY * distY) <= this.r
+    return inRange
     console.log("entra")
   }
 

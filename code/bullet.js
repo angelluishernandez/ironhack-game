@@ -19,9 +19,9 @@ class Bullet {
     this.ctx.arc(this.x, this.y, this.r, 0, 2 * Math.PI);
   }
 
-  move() {
-    const dx = this.x - el.x - el.w
-    const dy = this.y - el.y - el.h/2    
+  move(enemy) {
+    const dx = this.x - enemy.x - enemy.w
+    const dy = this.y - enemy.y - enemy.h/2    
     this.angle = Math.atan2(dy, dx)
     this.vy = Math.sin (this.angle) * 1.5
     this.vx = Math.cos (this.angle) * 1.5

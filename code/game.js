@@ -10,9 +10,8 @@ class Game {
     this.posTowerX, this.posTowerY;
     this.tower = new Tower(ctx); // This one has to be removed after the test with firing are done
     this.waypointIndex = 0;
-    this.towers = []
+    this.towers = [];
 
-  
     // Enemies
     this.enemies = [];
     this.enemiesCrossed = [];
@@ -35,9 +34,9 @@ class Game {
       // this.inRange(this.towers, this.enemies)
       // this.checkEnemyPosition();
       // this.towerShooting()
-      this.shoot()
+      this.shoot();
 
-0
+      0;
       if (this.tick++ > 100) {
         this.tick = 0;
         this.addEnemy();
@@ -105,30 +104,25 @@ class Game {
         y >= this.board.waypoints[i].y - 40
       ) {
         return true;
-      } 
+      }
     }
   }
 
-  shoot(){
-    
-    this.enemies.forEach(enemy =>{
-      this.tower.inRange(enemy)
-      
-    })
-
-
-
+  shoot() {
+    this.enemies.forEach(enemy => {
+      this.tower.inRange(enemy);
+      if (inRange) {
+        this.bullets.push(
+          new Bullet(this.ctx, this.tower.x, this.tower.y, enemy.x, enemy.y)
+        );
+      }
+    });
   }
 
-/////////////////////////////////
-//Shooting logic
-//////////////////////////
-  
-
-    
+  /////////////////////////////////
+  //Shooting logic
+  //////////////////////////
 }
-
-
 
 /// towers finds targets
 
