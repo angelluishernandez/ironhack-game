@@ -4,28 +4,18 @@ class Bullet {
     this.x = x;
     this.y = y;
     this.enemy = enemy;
-    this.w = 20
+    this.w = 20;
     this.h = 20;
     this.vx = 1;
-    this.vy = 1
-    this.bulletActive = false;
-    this.img = new Image
-    this.img.src = "./imgs/flame.png"
+    this.vy = 1;
+    // this.bulletActive = false;
+    this.img = new Image();
+    this.img.src = "./imgs/flame.png";
   }
 
   draw() {
+    this.ctx.drawImage(this.img, this.x, this.y, this.w, this.h);
 
-    this.ctx.drawImage(
-
-      this.img,
-      this.x,
-      this.y,
-      this.w,
-      this.h
-    );
-
-
-    
     this.ctx.fillStyle = "#fa9400";
     this.ctx.beginPath();
     this.ctx.arc(this.x, this.y, this.r, 0, 2 * Math.PI);
@@ -41,9 +31,5 @@ class Bullet {
     this.vx = Math.cos(this.angle) * 1.5;
     this.x -= this.vx * 5;
     this.y -= this.vy * 5;
-
-
   }
-
-  
 }

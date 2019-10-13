@@ -31,7 +31,6 @@ class Enemy {
       this.y, 
       this.w, 
       this.h);
-    this.ctx.fillStyle ="#e1cc4f"
   }
 
   move() {

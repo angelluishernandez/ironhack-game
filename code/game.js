@@ -7,30 +7,29 @@ class Game {
     this.board = new Board(ctx);
     // Player
 
-    this.player = new Player();
+    this.player = new Player(ctx);
 
     // Towers
-    this.tower = new Tower(ctx, null, null)
+    this.tower = new Tower(ctx, null, null);
     this.posTowerX, this.posTowerY;
     this.waypointIndex = 0;
     this.towers = [];
 
     // Enemies
     this.enemies = [];
-    this.numberOfEnemiesFinished = 0
+    this.numberOfEnemiesFinished = 0;
 
     this.lives = 5;
-
   }
   run() {
     this.intervalId = setInterval(() => {
       this.clear();
       this.draw();
       this.move();
-      this.checkCollisions()
-      this.enemiesEnded()
+      this.checkCollisions();
       this.shoot();
 
+      this.enemiesEnded();
       // this.enemiesPastFinish();
       if (this.tick++ > 100) {
         this.tick = 0;
@@ -44,11 +43,14 @@ class Game {
   }
   draw() {
     this.board.draw();
+    this.player.draw()
     this.towers.forEach(tower => tower.draw(tower.x, tower.y));
     this.enemies.forEach(enemy => enemy.draw());
+    
   }
 
   move() {
+    this.player.move()
     this.enemies.forEach(enemy => enemy.move());
     this.towers.forEach(tower => tower.move());
   }
@@ -58,29 +60,11 @@ class Game {
   /////////////////////////////////////
 
   addEnemy() {
-    if (this.enemies.length < 20) {
+    if (this.enemies.length < 1) {
       const enemy = new Enemy(this.ctx);
       this.enemies.push(enemy);
     }
   }
-
-  // enemiesPastFinish() {
-  //   this.enemies.forEach(enemy => {
-  //     enemy.enemiesCrossed(this.player);
-  //     if (enemy.enemiesFinished.length > 5) {
-  //       this.gameOver();
-  //     }
-  //   });
-  // }
-
-
-
-
-
-
-
-
-
 
   ///////////////////////////////////////////////////////////////////
   // Checking if tower is in path
@@ -107,8 +91,7 @@ class Game {
         x <= this.board.waypoints[i].x + 40 &&
         x >= this.board.waypoints[i].x - 40
       ) {
-        return true;      // this.checkCollisions()
-
+        return true; // this.checkCollisions()
       }
 
       // check horizonal and moving left
@@ -124,87 +107,70 @@ class Game {
   }
 
   /////////////////////////////////
-  //Shooting logic
+  //Shooting  & collision logic
   //////////////////////////
 
   shoot() {
-    if(this.tick > 100) 
       this.enemies.forEach(enemy => {
         this.towers.forEach(tower => {
           tower.isInRange(enemy);
+          enemy.health -+ tower.damage
+          console.log(enemy.health)
         });
       });
-    }
-  
+   
+  }
 
-
-  checkCollisions(){
-    
+  checkCollisions() {
     this.enemies.forEach(enemy => {
       this.towers.forEach(tower => {
         tower.bulletHitDetection(enemy);
-        
-    })
-  });
-
+        // tower.onBulletHit(enemy)
+      });
+    });
   }
 
+  ///////////////////////////////////////////
+  /////////Game Mechanics
+  //////////////////////////////////////
+  enemiesEnded() {
+    for (let i = 0, l = this.enemies.length - 1; i < l; i++) {
+      if (this.enemies[i].enemyCrossed()) {
+        this.numberOfEnemiesFinished += 1;
+        this.enemies.splice(i, 1);
+        console.log(this.numberOfEnemiesFinished);
+      }
+      if (this.numberOfEnemiesFinished > 5) {
+        this._gameOver();
+      }
+    }
+  this.enemies.forEach(enemy => {
+    if(enemy.health <= 0 ){
+      this.enemies.splice(enemy, 1)
 
-///////////////////////////////////////////7
-/////////Game Mechanics
-
-enemiesEnded(){
-
-for(let i = 0, l = this.enemies.length - 1; i < l; i++){
-  if(this.enemies[i].enemyCrossed()){
-
-
-    this.numberOfEnemiesFinished += 1
-    this.enemies.splice(i, 1)
-    console.log(this.numberOfEnemiesFinished)
-
+    }
+  })
   }
-  if(this.numberOfEnemiesFinished > 5){
-    this._gameOver()
+
+  ///////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////
+  ////////GAME OVER ////////////////////////////////////////7
+  ////////////////////////////////////////////////////////77
+
+  _gameOver() {
+    clearInterval(this.intervalId);
+
+    this.ctx.font = "40px Comic Sans MS";
+    this.ctx.textAlign = "center";
+    this.ctx.fillText(
+      "GAME OVER",
+      this.ctx.canvas.width / 2,
+      this.ctx.canvas.height / 2
+    );
   }
-
-
-
-
-
-
-
-
- 
-}
 }
 
-///////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////
-////////GAME OVER ////////////////////////////////////////7
-////////////////////////////////////////////////////////77
-
-_gameOver() {
-  clearInterval(this.intervalId)
-
-  this.ctx.font = "40px Comic Sans MS";
-  this.ctx.textAlign = "center";
-  this.ctx.fillText(
-    "GAME OVER",
-    this.ctx.canvas.width / 2,
-    this.ctx.canvas.height / 2
-  );
-
-
-
-
-}
-
-}  
-  
-   
 // }
-
 
 ////////////////////////////////////////////////////////////////////////////////////
 //TODO

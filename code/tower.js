@@ -9,8 +9,9 @@ class Tower {
     this.r2 = 20;
     this.inRange, this.collisionDistance;
     this.bullets = [];
-    this.bulletsActive = [];
-    this.towerDamage = 25
+    
+    this.collisionWithEnemy = false;
+    this.towerDamage = 1;
   }
 
   draw(x, y) {
@@ -36,27 +37,53 @@ class Tower {
     const distX = this.x - enemy.x - enemy.w / 2;
     const distY = this.y - enemy.y - enemy.w / 2;
     this.inRange = Math.sqrt(distX * distX + distY * distY);
-    if (this.inRange <= this.r) {
+    if (this.inRange <= 90 && !this.collisionWithEnemy) {
+      console.log(this.inRange, distX, distY)
       this.bullets.push(new Bullet(this.ctx, this.x, this.y, enemy));
-
+      if(this.inRange > 90){
+        return
+      }
       // console.log(this.bullets.length);
     }
 
     return this.inRange;
   }
 
-bulletHitDetection(enemy){
+  bulletHitDetection(enemy) {
+    for (let i = 0; i < this.bullets.length; i++) {
+      let bullet = this.bullets[i];
+      if (
+        bullet.x + bullet.w >= enemy.x &&
+        bullet.x <= enemy.x + enemy.w &&
+        bullet.y >= enemy.y &&
+        bullet.y <= enemy.y + enemy.h 
+       
+       
+      ) {
+        this.bullets.splice(this.bullets[i], 1);
+        enemy.health -= this.towerDamage;
+        if(enemy.health <= 0){
+          this.bullets.splice(this.bullets[i], 1);
 
-  for(let i = 0; i < this.bullets.length; i++){
-    let bullet = this.bullets[i]
-    if(bullet.x + bullet.r >= enemy.x && 
-      bullet.x <= enemy.x + enemy.w &&
-      bullet.y >= enemy.y &&
-      bullet.y <= enemy.y + enemy.h)
-      this.bullets.splice(this.bullets[i], 1)
 
+        }
+        this.collisionWithEnemy = true
+       
+      }
+    return this.collisionWithEnemy
+    }
   }
-}
+  // onBulletHit(enemy) {
+  //   this.bulletHitDetection(enemy)
+  //   for (let i = 0; i < enemy.length; i++) {
+  //     if (this.collisionWithEnemy) {
+  //       console.log(this.collisionWithEnemy)
+        
+       
+  //     }
+  //   }
+  // }
+
 }
 
 // this.bullets.forEach(bullet => {
