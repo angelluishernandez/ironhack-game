@@ -13,7 +13,44 @@
   background: blue;
 } */
 
-
-canvas{
-  border: 3px dotted grey  
+canvas {
+  border: 3px dotted grey;
+  
 }
+body {
+  background-image: url("../imgs/wallpaper.jpg");
+ margin-right: 25%;
+ margin-left: 25%
+}
+button{
+  margin-left: 50%;
+  box-shadow: 3px 4px 0px 0px #ab8616;
+	background:linear-gradient(to bottom, #4f410b 5%, #e3aa39 100%);
+	background-color:#4f410b;
+	border-radius:5px;
+	border:1px solid #c29334;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:17px;
+	font-weight:bold;
+	padding:12px 44px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #cccc54;
+}
+button:active{
+
+  background:linear-gradient(to bottom, #e3aa39 5%, #4f410b 100%);
+	background-color:#e3aa39;
+}
+button:hover{
+  position:relative;
+	top:1px;
+}
+
+
+
+  
+  
+

@@ -20,6 +20,9 @@ class Game {
     this.numberOfEnemiesFinished = 0;
 
     this.lives = 5;
+    // Healthy food
+    this.fruit = new Fruit(ctx)
+
   }
   run() {
     this.intervalId = setInterval(() => {
@@ -46,6 +49,7 @@ class Game {
     this.player.draw()
     this.towers.forEach(tower => tower.draw(tower.x, tower.y));
     this.enemies.forEach(enemy => enemy.draw());
+    this.fruit.draw()
     
   }
 
@@ -53,6 +57,7 @@ class Game {
     this.player.move()
     this.enemies.forEach(enemy => enemy.move());
     this.towers.forEach(tower => tower.move());
+    this.fruit.move()
   }
 
   /////////////////////////////////////

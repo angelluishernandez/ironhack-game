@@ -20,11 +20,11 @@ window.onload = function startGame() {
   );
 
   function getMousePosition(e) {
-    const rect = canvas.getBoundingClientRect();
-
+    
+const canvasBounds = canvas.getBoundingClientRect()
     game.mouseCoordinates = {
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.left
+      x: e.pageX - canvasBounds.left,
+      y: e.pageY - canvasBounds.top
     };
     return game.mouseCoordinates;
   }
