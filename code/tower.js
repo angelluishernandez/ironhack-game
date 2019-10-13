@@ -4,27 +4,27 @@ class Tower {
     this.canvas = canvas;
     this.x = x;
     this.y = y;
-
+    this.w = 40;
+    this.h = 100;
     this.r = 90;
     this.r2 = 20;
+    this.img = new Image();
+    this.img.src = "./imgs/tower.png";
     this.inRange, this.collisionDistance;
     this.bullets = [];
-    
+    this.time = 100000;
     this.collisionWithEnemy = false;
-    this.towerDamage = 1;
+    this.towerDamage = 10;
   }
 
-  draw(x, y) {
-    this.ctx.beginPath();
-    this.ctx.arc(x, y, this.r, 0, 2 * Math.PI);
-    this.ctx.stroke();
-    this.ctx.closePath();
+  draw() {
+    this.ctx.drawImage(this.img, this.x - 50, this.y - 30, this.w, this.h);
 
-    this.ctx.beginPath();
-    this.ctx.arc(this.x, this.y, this.r2, 0, 2 * Math.PI);
-    this.ctx.fillStyle = "#287233";
-    this.ctx.fill();
-    this.ctx.closePath();
+    // this.ctx.beginPath();
+    // this.ctx.arc(this.x, this.y, this.r2, 0, 2 * Math.PI);
+    // this.ctx.fillStyle = "#287233";
+    // this.ctx.fill();
+    // this.ctx.closePath();
 
     this.bullets.forEach(bullet => bullet.draw());
   }
@@ -37,12 +37,10 @@ class Tower {
     const distX = this.x - enemy.x - enemy.w / 2;
     const distY = this.y - enemy.y - enemy.w / 2;
     this.inRange = Math.sqrt(distX * distX + distY * distY);
-    if (this.inRange <= 90 && !this.collisionWithEnemy) {
-      console.log(this.inRange, distX, distY)
+    if (this.inRange <= 90) {
+      console.log(this.inRange, distX, distY);
       this.bullets.push(new Bullet(this.ctx, this.x, this.y, enemy));
-      if(this.inRange > 90){
-        return
-      }
+
       // console.log(this.bullets.length);
     }
 
@@ -55,40 +53,17 @@ class Tower {
       if (
         bullet.x + bullet.w >= enemy.x &&
         bullet.x <= enemy.x + enemy.w &&
-        bullet.y >= enemy.y &&
-        bullet.y <= enemy.y + enemy.h 
-       
-       
+        bullet.y + bullet.y>= enemy.y &&
+        bullet.y <= enemy.y + enemy.h
       ) {
-        this.bullets.splice(this.bullets[i], 1);
+       this.bullets = this.bullets.filter(bullet => bullet[i] === false);
         enemy.health -= this.towerDamage;
-        if(enemy.health <= 0){
+        if ((enemy.health <= 0 && this.bullet[i].vx <= 0) || this.bullet[i]) {
           this.bullets.splice(this.bullets[i], 1);
-
-
         }
-        this.collisionWithEnemy = true
-       
+        this.collisionWithEnemy = true;
       }
-    return this.collisionWithEnemy
+      return this.collisionWithEnemy;
     }
   }
-  // onBulletHit(enemy) {
-  //   this.bulletHitDetection(enemy)
-  //   for (let i = 0; i < enemy.length; i++) {
-  //     if (this.collisionWithEnemy) {
-  //       console.log(this.collisionWithEnemy)
-        
-       
-  //     }
-  //   }
-  // }
-
 }
-
-// this.bullets.forEach(bullet => {
-//   if (this.collision >= bullet.r) {
-//     bullet.hasHit = true;
-//     this.bullets = this.bullets.splice(bullet, 1);
-//   }
-// });

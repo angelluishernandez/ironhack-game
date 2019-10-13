@@ -18,10 +18,20 @@ class Game {
     // Enemies
     this.enemies = [];
     this.numberOfEnemiesFinished = 0;
-
+    this.numberOfKills = 0
     this.lives = 5;
     // Healthy food
     this.fruit = new Fruit(ctx)
+
+
+
+    ////////////
+    //Score
+    this.caloriesBurned = 0
+
+
+
+
 
   }
   run() {
@@ -29,14 +39,18 @@ class Game {
       this.clear();
       this.draw();
       this.move();
+      
       this.checkCollisions();
       this.shoot();
-
+      this.removeFirstTower()
       this.enemiesEnded();
+      this.playerColWithEnemy()
+      this.playerColWithHealthyFood()
       // this.enemiesPastFinish();
       if (this.tick++ > 100) {
         this.tick = 0;
         this.addEnemy();
+        this.shoot();
       }
     }, 1000 / 60);
   }
@@ -47,7 +61,7 @@ class Game {
   draw() {
     this.board.draw();
     this.player.draw()
-    this.towers.forEach(tower => tower.draw(tower.x, tower.y));
+    this.towers.forEach(tower => tower.draw());
     this.enemies.forEach(enemy => enemy.draw());
     this.fruit.draw()
     
@@ -65,7 +79,7 @@ class Game {
   /////////////////////////////////////
 
   addEnemy() {
-    if (this.enemies.length < 1) {
+    if (this.enemies.length < 20) {
       const enemy = new Enemy(this.ctx);
       this.enemies.push(enemy);
     }
@@ -81,30 +95,30 @@ class Game {
       // check horizontal and moving right
 
       if (
-        x <= this.board.waypoints[i + 1].x + 40 &&
+        x <= this.board.waypoints[i + 1].x + 50 &&
         x >= this.board.waypoints[i].x &&
-        y <= this.board.waypoints[i].y + 40 &&
-        y >= this.board.waypoints[i].y - 40
+        y <= this.board.waypoints[i].y + 50 &&
+        y >= this.board.waypoints[i].y - 50
       ) {
         return true;
       }
 
       // check vertical and moving down
       else if (
-        y <= this.board.waypoints[i + 1].y + 40 &&
+        y <= this.board.waypoints[i + 1].y + 50 &&
         y >= this.board.waypoints[i].y &&
-        x <= this.board.waypoints[i].x + 40 &&
-        x >= this.board.waypoints[i].x - 40
+        x <= this.board.waypoints[i].x + 50 &&
+        x >= this.board.waypoints[i].x - 50
       ) {
         return true; // this.checkCollisions()
       }
 
       // check horizonal and moving left
       else if (
-        x >= this.board.waypoints[i + 1].x + 40 &&
+        x >= this.board.waypoints[i + 1].x + 50 &&
         x <= this.board.waypoints[i].x &&
-        y <= this.board.waypoints[i].y + 40 &&
-        y >= this.board.waypoints[i].y - 40
+        y <= this.board.waypoints[i].y + 50 &&
+        y >= this.board.waypoints[i].y - 50
       ) {
         return true;
       }
@@ -116,14 +130,17 @@ class Game {
   //////////////////////////
 
   shoot() {
-      this.enemies.forEach(enemy => {
-        this.towers.forEach(tower => {
+    if(this.tick > 70){
+
+   
+      this.towers.forEach(tower => {
+        this.enemies.forEach(enemy => {
           tower.isInRange(enemy);
           enemy.health -+ tower.damage
           console.log(enemy.health)
         });
       });
-   
+    }
   }
 
   checkCollisions() {
@@ -152,12 +169,95 @@ class Game {
   this.enemies.forEach(enemy => {
     if(enemy.health <= 0 ){
       this.enemies.splice(enemy, 1)
+      this.numerOfKills += 1
 
     }
   })
   }
 
+  removeFirstTower(){
+    if(this.towers.length > 5){
+      this.towers.shift()
+    }
+
+
+
+  }
+
+
   ///////////////////////////////////////////////////////////
+  //PLAyer collision
+  ///////////////////////////////////////////////////////////
+  
+  playerColWithEnemy(){
+    const col = this.enemies.some(enemy => {
+      return enemy.collideEnemy(this.player)
+    })
+
+    if(col){
+      this.player.lives -= 0.1
+      if(this.player.lives <= 0)
+      this._gameOver()
+      console.log("entra")
+    }
+
+
+
+  }
+  playerColWithHealthyFood(){
+
+    // const col = this.fruits.some(fruit =>{
+    //   return fruit.collideHealthyFood(this.player)
+  // })
+    const col = this.fruit.collideHealthyFood(this.player)
+   
+    if(col){
+      this.player.lives +1
+      this.fruit.health -=1
+      if(this.fruit.health <= 0){
+        delete this.fruit
+      }
+    }
+
+}
+
+/////////////////////////////////////////////////////////////////////
+//////////
+///////////////////////////////////////////////////////////////////
+
+score(){
+  if(!this.numberOfKills === 0){
+    this.caloriesBurned = this.numberOfKills * 25 
+
+  } else if(this.fruit.helth === 0 ){
+    this.player.lives += 1
+
+
+  }
+
+
+
+
+
+}
+  
+//////////////////////////////////////////////////////
+////// Next Wave
+////////////////////////////////////////////////////
+
+
+pushNextWave(){
+
+  if(this.numberOfKills + this.numberOfEnemiesFinished === 0 ){
+
+    
+
+
+  }
+
+
+}
+  
   ///////////////////////////////////////////////////////////
   ////////GAME OVER ////////////////////////////////////////7
   ////////////////////////////////////////////////////////77

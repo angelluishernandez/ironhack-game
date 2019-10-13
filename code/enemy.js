@@ -3,8 +3,8 @@ class Enemy {
     this.ctx = ctx;
     this.waypoints = [
       { x: 0, y: 100 },
-      { x: 700, y: 100 },
-      { x: 700, y: 300 },
+      { x: 650, y: 100 },
+      { x: 650, y: 300 },
       { x: 100, y: 300 },
       { x: 100, y: 500 },
       { x: 300, y: 500 },
@@ -20,7 +20,8 @@ class Enemy {
     this.health = 100
     this.isDead = false
     this.img = new Image
-    this.img.src = "./imgs/taco.png"
+    this.img.src = "./imgs/enemy"+(Math.floor((Math.random()*6))+1)+".png"
+    
     
   }
 
@@ -69,7 +70,7 @@ class Enemy {
       moves;
     if (moves > 0) {
       moves--;
-      this.x += xPixels;
+      this.x += xPixels ;
       this.y += yPixels;
 
     }
@@ -108,6 +109,11 @@ removeDeadEnemy(){
   }
   return this.isDead
 }
+collideEnemy(player) {
+  const colX = player.x + player.w > this.x && player.x < this.x + this.w
+  const colY = player.y + player.h > this.y && player.y < this.y + this.h
 
+  return colX && colY
+}
   
 }

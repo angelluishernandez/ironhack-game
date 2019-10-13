@@ -3,7 +3,7 @@ window.onload = function startGame() {
 
   const ctx = canvas.getContext("2d");
   const game = new Game(ctx);
-  const start = document.querySelector("button")
+  const start = document.querySelector("button");
   start.onclick = () => game.run();
 
   canvas.addEventListener("mousedown", getMousePosition, false);
@@ -20,8 +20,7 @@ window.onload = function startGame() {
   );
 
   function getMousePosition(e) {
-    
-const canvasBounds = canvas.getBoundingClientRect()
+    const canvasBounds = canvas.getBoundingClientRect();
     game.mouseCoordinates = {
       x: e.pageX - canvasBounds.left,
       y: e.pageY - canvasBounds.top

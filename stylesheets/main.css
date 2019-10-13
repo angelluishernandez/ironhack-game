@@ -6,13 +6,16 @@
   
   
 }
-
+*/
 
 #game-board{
-  width: 100%;
-  background: blue;
-} */
+  margin: 0 auto; 
+	display: flex;
+} 
+#game-board ul li{
+	display: inline
 
+}
 canvas {
   border: 3px dotted grey;
   
