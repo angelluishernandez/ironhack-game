@@ -13,14 +13,24 @@ class Enemy {
     this.waypointsIndex = 0;
     this.x = 0;
     this.y = 100;
-    this.w = 20;
-    this.h = 20;
+    this.w = 50;
+    this.h = 50;
     this.speed = 2;
-
+    this.enemyFinished = false
+    this.health = 100
+    this.isDead = false
+    this.img = new Image
+    this.img.src = "./imgs/taco.png"
+    
   }
 
   draw() {
-    this.ctx.fillRect(this.x, this.y, this.w, this.h);
+    this.ctx.drawImage(
+      this.img,
+      this.x, 
+      this.y, 
+      this.w, 
+      this.h);
     this.ctx.fillStyle ="#e1cc4f"
   }
 
@@ -43,7 +53,8 @@ class Enemy {
 
     const distance = Math.sqrt(distX * distX + distY * distY);
 
-    //How many moves will it takes us to move from a point to another having into accoun how many times the screen refreshes.
+    //How many moves will it takes us to move from a 
+    //point to another having into account how many times the screen refreshes.
 
     let moves = distance / this.speed;
 
@@ -84,20 +95,20 @@ class Enemy {
 
   enemyCrossed(){
 
-    if(this.x >= 1001){
-      console.log("entra")
+    if(this.x >= 1100){
+
+      this.enemyFinished = true
     }
-
-
+return this.enemyFinished
   }
 
-  // deleteEnemies(){
-  //   if(this.x > this.ctx.canvas.witdth + 100){
-      
-  //     delete Enemy
 
+removeDeadEnemy(){
+  if(this.health <= 0){
+    this.isDead = true 
+  }
+  return this.isDead
+}
 
-  //   }
-    
-  // }
+  
 }

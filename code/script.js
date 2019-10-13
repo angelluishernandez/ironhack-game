@@ -18,7 +18,6 @@ window.onload = function startGame() {
     },
     false
   );
-  // else console.log("in route")
 
   function getMousePosition(e) {
     const rect = canvas.getBoundingClientRect();

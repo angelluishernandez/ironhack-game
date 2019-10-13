@@ -12,7 +12,7 @@ class Board {
     ];
     this.img = new Image();
     this.img.src =
-      "https://spacenews.com/wp-content/uploads/2018/05/24359364107_152b0152ff_k-879x485.jpg";
+      "./imgs/Dx3sBTBWoAETO5s.jpg";
   }
   draw() {
     // this.ctx.fillStyle = "url(C:\Users\Ángel\Documents\ironhack-game-master\imgs\first_light.300dpi.jpg)"
