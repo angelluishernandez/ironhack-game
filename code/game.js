@@ -4,6 +4,7 @@ class Game {
     this.canvas = canvas;
     this.intervalId = null;
     this.tick = 0;
+    this.tick2 = 0
     this.board = new Board(ctx);
     // Player
 
@@ -17,27 +18,23 @@ class Game {
 
     // Enemies
     this.enemies = [];
+    this.sweets = [];
+    this.bbqs = [];
     this.numberOfEnemiesFinished = 0;
-    this.numberOfKills = 0
+    this.numberOfKills = 0;
     this.lives = 5;
-    this.enemiesSpawned = 0
+    this.enemiesSpawned = 0;
     // Healthy food
-    this.fruit = new Fruit(ctx)
-
+    this.fruits = []
+    this.fruitsSpawned = 0
 
     //Wave control
 
-    this.wave = 0
-
+    this.wave = 2;
 
     ////////////
     //Score
-    this.caloriesBurned = 0
-
-
-
-
-
+    this.caloriesBurned = 0;
   }
   run() {
     this.intervalId = setInterval(() => {
@@ -45,17 +42,34 @@ class Game {
       this.draw();
       this.move();
       
-      this.checkCollisions();
-      this.shoot();
-      this.removeFirstTower()
-      this.enemiesEnded();
-      this.playerColWithEnemy()
-      this.playerColWithHealthyFood()
-      // this.enemiesPastFinish();
+      this.checkCollisions(this.enemies);
+      this.checkCollisions(this.sweets);
+      this.checkCollisions(this.bbqs);
+      this.shoot(this.enemies);
+      this.shoot(this.sweets);
+      this.shoot(this.bbqs);
+      this.removeFirstTower();
+      this.enemiesEnded(this.enemies);
+      this.enemiesEnded(this.sweets);
+      this.enemiesEnded(this.bbqs);
+      this.playerColWithEnemy(this.enemies);
+      this.playerColWithEnemy(this.sweets);
+      this.playerColWithEnemy(this.bbqs);
+      this.playerColWithHealthyFood();
       if (this.tick++ > 100) {
         this.tick = 0;
-        this.addEnemy();
-       
+        if (this.wave === 0) {
+          this.addEnemy();}
+        if (this.wave === 1) {
+          this.addSecondWave();
+        }
+        if (this.wave === 2) {
+          this.addThirdWave();
+        }
+      }
+      if(this.tick2++ > 150){
+        this.tick2 = 0
+        this.addFruits()
       }
     }, 1000 / 60);
   }
@@ -65,19 +79,21 @@ class Game {
   }
   draw() {
     this.board.draw();
-    this.player.draw()
+    this.player.draw();
     this.towers.forEach(tower => tower.draw());
     this.enemies.forEach(enemy => enemy.draw());
-    this.fruit.draw()
-    
+    this.sweets.forEach(sweet => sweet.draw());
+    this.bbqs.forEach(bbq => bbq.draw());
+    this.fruits.forEach(fruit => fruit.draw())
   }
 
   move() {
-    this.player.move()
+    this.player.move();
     this.enemies.forEach(enemy => enemy.move());
     this.towers.forEach(tower => tower.move());
-    this.fruit.move()
-  }
+    this.sweets.forEach(sweet => sweet.move());
+    this.bbqs.forEach(bbq => bbq.move());
+    this.fruits.forEach(fruit => fruit.move())  }
 
   /////////////////////////////////////
   //Enemies
@@ -86,21 +102,57 @@ class Game {
   addEnemy() {
     if (this.enemiesSpawned < 19) {
       const enemy = new Enemy(this.ctx);
-      this.enemiesSpawned += 1
+      this.enemiesSpawned += 1;
       this.enemies.push(enemy);
     }
   }
 
+  addSecondWave() {
+    if (this.enemiesSpawned < 19) {
+      const sweets = new Sweets(this.ctx);
+      this.enemiesSpawned += 1;
+      this.sweets.push(sweets);
+    }
+  }
 
-  waveControl(){
-    if(this.enemiesSpawned === 20 && 
-      this.numberOfEnemiesFinished < 5 &&
-      this.numberOfKills >= 15 ){
-        this.wave += 1
+  addThirdWave() {
+    if (this.enemiesSpawned < 19) {
+      const bbq = new Bbq(this.ctx);
+      this.enemiesSpawned += 1;
+      this.bbqs.push(bbq);
+    }
+  }
 
+  addFruits(){
+    if(this.tick2 > Math.random() * 300 - 150 ){
+      const fruit = new Fruit(this.ctx)
+      this.fruitsSpawned += 1
+      this.fruits.push(fruit)
+      if(this.fruitsSpawned > 20){
+        return
       }
 
+      console.log(this.fruitsSpawned)
 
+    }
+
+
+  }
+
+  waveControl() {
+    if (
+      this.enemiesSpawned === 20 &&
+      this.numberOfEnemiesFinished < 5 &&
+      this.numberOfKills >= 15
+    ) {
+      this.wave += 1;
+    }
+    if (
+      this.enemiesSpawned === 40 &&
+      this.numberOfEnemiesFinished < 5 &&
+      this.numberOfKills >= 30
+    )
+      this.wave += 1;
   }
 
   ///////////////////////////////////////////////////////////////////
@@ -147,25 +199,22 @@ class Game {
   //Shooting  & collision logic
   //////////////////////////
 
-  shoot() {
-    if(this.tick > 70){
-
-   
+  shoot(enemies) {
+    if (this.tick > 70) {
       this.towers.forEach(tower => {
-        this.enemies.forEach(enemy => {
+        enemies.forEach(enemy => {
           tower.isInRange(enemy);
-          enemy.health -+ tower.damage
-          console.log(enemy.health)
+          enemy.health - +tower.damage;
+          console.log(enemy.health);
         });
       });
     }
   }
 
-  checkCollisions() {
-    this.enemies.forEach(enemy => {
+  checkCollisions(enemies) {
+    enemies.forEach(enemy => {
       this.towers.forEach(tower => {
         tower.bulletHitDetection(enemy);
-        // tower.onBulletHit(enemy)
       });
     });
   }
@@ -173,9 +222,9 @@ class Game {
   ///////////////////////////////////////////
   /////////Game Mechanics
   //////////////////////////////////////
-  enemiesEnded() {
-    for (let i = 0, l = this.enemies.length - 1; i < l; i++) {
-      if (this.enemies[i].enemyCrossed()) {
+  enemiesEnded(enemies) {
+    for (let i = 0, l = enemies.length - 1; i < l; i++) {
+      if (enemies[i].enemyCrossed()) {
         this.numberOfEnemiesFinished += 1;
         this.enemies.splice(i, 1);
         console.log(this.numberOfEnemiesFinished);
@@ -184,98 +233,74 @@ class Game {
         this._gameOver();
       }
     }
-  this.enemies.forEach(enemy => {
-    if(enemy.health <= 0 ){
-      this.enemies.splice(enemy, 1)
-      this.numerOfKills += 1
-
-    }
-  })
+    enemies.forEach(enemy => {
+      if (enemy.health <= 0) {
+        enemies.splice(enemy, 1);
+        this.numerOfKills += 1;
+      }
+    });
   }
 
-  removeFirstTower(){
-    if(this.towers.length > 5){
-      this.towers.shift()
+  removeFirstTower() {
+    if (this.towers.length > 5 && this.wave === 0) {
+      this.towers.shift();
     }
-
-
-
+    if (this.towers.length > 6 && this.wave === 1) {
+      this.towers.shift();
+    }
+    if (this.towers.length > 7 && this.wave === 2) {
+      this.towers.shift();
+    }
   }
-
 
   ///////////////////////////////////////////////////////////
   //PLAyer collision
   ///////////////////////////////////////////////////////////
-  
-  playerColWithEnemy(){
-    const col = this.enemies.some(enemy => {
-      return enemy.collideEnemy(this.player)
-    })
 
-    if(col){
-      this.player.lives -= 0.1
-      if(this.player.lives <= 0)
-      this._gameOver()
-      console.log("entra")
+  playerColWithEnemy(enemies) {
+    const col = enemies.some(enemy => {
+      return enemy.collideEnemy(this.player);
+    });
+
+    if (col) {
+      this.player.lives -= 0.1;
+      if (this.player.lives <= 0) this._gameOver();
+      console.log("entra");
     }
-
-
-
   }
-  playerColWithHealthyFood(){
-
+  playerColWithHealthyFood() {
     // const col = this.fruits.some(fruit =>{
     //   return fruit.collideHealthyFood(this.player)
-  // })
-    const col = this.fruit.collideHealthyFood(this.player)
-   
-    if(col){
-      this.player.lives +1
-      this.fruit.health -=1
-      if(this.fruit.health <= 0){
-        delete this.fruit
-      }
+    // })
+    const col = this.fruits.some(fruit => {
+      return fruit.collideEnemy(this.player)
+    });
+
+    if (col) {
+      this.player.lives + 1;
+      
+      this.fruits.forEach(fruit => {
+        fruit.health -= 1;
+        if (fruit.health <= 0) {
+          this.fruits.splice(fruit, 1)
+        }
+      })
+      
     }
-
-}
-
-/////////////////////////////////////////////////////////////////////
-//////////
-///////////////////////////////////////////////////////////////////
-
-score(){
-  if(!this.numberOfKills === 0){
-    this.caloriesBurned = this.numberOfKills * 25 
-
-  } else if(this.fruit.helth === 0 ){
-    this.player.lives += 1
-
-
   }
 
+  /////////////////////////////////////////////////////////////////////
+  //////////
+  ///////////////////////////////////////////////////////////////////
 
-
-
-
-}
-  
-//////////////////////////////////////////////////////
-////// Next Wave
-////////////////////////////////////////////////////
-
-
-pushNextWave(){
-
-  if(this.numberOfKills + this.numberOfEnemiesFinished === 0 ){
-
-    
-
-
+  score() {
+    if (!this.numberOfKills === 0) {
+      this.caloriesBurned = this.numberOfKills * 25;
+    } else if (this.fruit.health === 0) {
+      this.player.lives += 1;
+    }
   }
 
-
-}
-  
   ///////////////////////////////////////////////////////////
   ////////GAME OVER ////////////////////////////////////////7
   ////////////////////////////////////////////////////////77
@@ -292,44 +317,3 @@ pushNextWave(){
     );
   }
 }
-
-// }
-
-////////////////////////////////////////////////////////////////////////////////////
-//TODO
-///////////////////////////////////////////////////////////////////////////
-
-//   }
-
-// deleteEnemy(){
-//   this.enemies.forEach(function(enemy){
-//     if(enemy.x > this.ctx.width){
-//       console.log("entra")
-//       //Use filter to check if the number of enemies exceeds the number of lives.
-//       this.enemies.filter(enemy =>{
-
-//         if(enemy.x > this.ctx.width){
-//           console.log("entra")
-//           this.enemiesCrossed.push(enemy)
-//           if(this.enemiesCrossed >= this.lives){
-//             alert("Game over")
-//           }
-//         }
-
-//       })
-//     }
-
-//   })
-
-// }
-
-// checkCollision(){
-//   if(this.enemy.x + this.enemy.w === this.tower.r ||
-// this.enemy.y + this.enemy.h === this.tower.r ||
-// this.enemy.x - this.enemy.w === this.tower.r ||
-// this.enemy.y - this.enemy.h === this.tower.r ||
-// ){
-
-//     delete this.enemy
-//   }
-// }
