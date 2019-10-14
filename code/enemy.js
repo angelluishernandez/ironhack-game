@@ -17,7 +17,7 @@ class Enemy {
     this.h = 50;
     this.speed = 2;
     this.enemyFinished = false
-    this.health = 100
+    this.health = 150
     this.isDead = false
     this.img = new Image
     this.img.src = "./imgs/enemy"+(Math.floor((Math.random()*6))+1)+".png"

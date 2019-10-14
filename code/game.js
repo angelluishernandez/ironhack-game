@@ -20,9 +20,14 @@ class Game {
     this.numberOfEnemiesFinished = 0;
     this.numberOfKills = 0
     this.lives = 5;
+    this.enemiesSpawned = 0
     // Healthy food
     this.fruit = new Fruit(ctx)
 
+
+    //Wave control
+
+    this.wave = 0
 
 
     ////////////
@@ -50,7 +55,7 @@ class Game {
       if (this.tick++ > 100) {
         this.tick = 0;
         this.addEnemy();
-        this.shoot();
+       
       }
     }, 1000 / 60);
   }
@@ -79,10 +84,23 @@ class Game {
   /////////////////////////////////////
 
   addEnemy() {
-    if (this.enemies.length < 20) {
+    if (this.enemiesSpawned < 19) {
       const enemy = new Enemy(this.ctx);
+      this.enemiesSpawned += 1
       this.enemies.push(enemy);
     }
+  }
+
+
+  waveControl(){
+    if(this.enemiesSpawned === 20 && 
+      this.numberOfEnemiesFinished < 5 &&
+      this.numberOfKills >= 15 ){
+        this.wave += 1
+
+      }
+
+
   }
 
   ///////////////////////////////////////////////////////////////////
