@@ -14,6 +14,7 @@ class Player{
     this.h = 50
     this.vx = 0
     this.vy = 0
+    this.calories = 1000
     this.listeners()
 
 

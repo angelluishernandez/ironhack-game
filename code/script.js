@@ -3,9 +3,10 @@ window.onload = function startGame() {
 
   const ctx = canvas.getContext("2d");
   const game = new Game(ctx);
-  const start = document.querySelector("button");
+  const start = document.getElementById("start");
   start.onclick = () => game.run();
-
+  const restart = document.getElementById("restart")
+  restart.onclick = () => window.location.reload()
   canvas.addEventListener("mousedown", getMousePosition, false);
   canvas.addEventListener(
     "mousedown",

@@ -7,26 +7,43 @@
   
 }
 */
+body{
+
+	font-family: 'Modak', cursive;
+	color: rgb(255, 0, 119)
+}
 
 #game-board{
-  margin: 0 auto; 
+	
+	
 	display: flex;
+	justify-content: center
 } 
-#game-board ul li{
-	display: inline
 
-}
 canvas {
   border: 3px dotted grey;
   
 }
 body {
   background-image: url("../imgs/wallpaper.jpg");
- margin-right: 25%;
- margin-left: 25%
+
+}
+.btn{
+	display: flex;
+	justify-content:  center;
+
+}
+.start{
+	margin-left: 10px;
+	margin-top: 10px;
+}
+.restart{
+	align-items: center;
+	margin-left: 20px; 
+	margin-top: 10px;
 }
 button{
-  margin-left: 50%;
+
   box-shadow: 3px 4px 0px 0px #ab8616;
 	background:linear-gradient(to bottom, #4f410b 5%, #e3aa39 100%);
 	background-color:#4f410b;
@@ -52,8 +69,44 @@ button:hover{
 	top:1px;
 }
 
-
+.score-box-left{
+	background-color: rgb(42, 147, 165);
+	border-radius: 20%;
+	width: 200px;
+	height: 150px;
+	text-align: center;
+	margin-right: 10px;
+}
+.score-box-right{
+	background-color: rgb(42, 147, 165);
+	border-radius: 20%;
+	width: 200px;
+	height: 150px;
+	text-align: center;
+	margin-left: 10px;
+}
+.score-box-left p{
+	text-align: center;
+	font-size: 2em
+	
+}
+.score-box-left h3{
+	text-align: center;
+	padding-top: 20px;
+	
+}
 
   
+.score-box-right p{
+	text-align: center;
+	font-size: 2em
+	
+}
+.score-box-right h3{
+	text-align: center;
+	padding-top: 20px;
+	
+}
+
   
 

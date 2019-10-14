@@ -4,7 +4,7 @@ class Game {
     this.canvas = canvas;
     this.intervalId = null;
     this.tick = 0;
-    this.tick2 = 0
+    this.tick2 = 0;
     this.board = new Board(ctx);
     // Player
 
@@ -25,12 +25,13 @@ class Game {
     this.lives = 5;
     this.enemiesSpawned = 0;
     // Healthy food
-    this.fruits = []
-    this.fruitsSpawned = 0
+    this.fruits = [];
+    this.fruitsSpawned = 0;
+    this.fruitsEaten = 0;
 
     //Wave control
 
-    this.wave = 2;
+    this.wave = 0;
 
     ////////////
     //Score
@@ -41,7 +42,8 @@ class Game {
       this.clear();
       this.draw();
       this.move();
-      
+      this.scoreAddToHtml();
+      this.waveControl();
       this.checkCollisions(this.enemies);
       this.checkCollisions(this.sweets);
       this.checkCollisions(this.bbqs);
@@ -56,20 +58,40 @@ class Game {
       this.playerColWithEnemy(this.sweets);
       this.playerColWithEnemy(this.bbqs);
       this.playerColWithHealthyFood();
+      console.log(this.wave);
+      console.log(this.enemiesSpawned);
+      console.log(this.numberOfKills);
       if (this.tick++ > 100) {
         this.tick = 0;
         if (this.wave === 0) {
-          this.addEnemy();}
+          this.addEnemy();
+        }
         if (this.wave === 1) {
-          this.addSecondWave();
+          this.ctx.font = "40px Arial";
+          this.ctx.textAlign = "center";
+          this.ctx.fillText(
+            "Next round in starts",
+            "in 3 seconds",
+            this.ctx.canvas.width / 2,
+            this.ctx.canvas.height /2
+          );
+          setTimeout(this.addSecondWave(), 4000);
         }
         if (this.wave === 2) {
-          this.addThirdWave();
+          this.ctx.font = "40px Arial";
+          this.ctx.textAlign = "center";
+          this.ctx.fillText(
+            "Next round in starts",
+            "in 3 seconds",
+            this.ctx.canvas.width / 2,
+            this.ctx.canvas.height /2
+          );
+          setTimeout(this.addThirdWave());
         }
       }
-      if(this.tick2++ > 150){
-        this.tick2 = 0
-        this.addFruits()
+      if (this.tick2++ > 150) {
+        this.tick2 = 0;
+        this.addFruits();
       }
     }, 1000 / 60);
   }
@@ -84,7 +106,7 @@ class Game {
     this.enemies.forEach(enemy => enemy.draw());
     this.sweets.forEach(sweet => sweet.draw());
     this.bbqs.forEach(bbq => bbq.draw());
-    this.fruits.forEach(fruit => fruit.draw())
+    this.fruits.forEach(fruit => fruit.draw());
   }
 
   move() {
@@ -93,14 +115,15 @@ class Game {
     this.towers.forEach(tower => tower.move());
     this.sweets.forEach(sweet => sweet.move());
     this.bbqs.forEach(bbq => bbq.move());
-    this.fruits.forEach(fruit => fruit.move())  }
+    this.fruits.forEach(fruit => fruit.move());
+  }
 
   /////////////////////////////////////
   //Enemies
   /////////////////////////////////////
 
   addEnemy() {
-    if (this.enemiesSpawned < 19) {
+    if (this.enemiesSpawned <= 19) {
       const enemy = new Enemy(this.ctx);
       this.enemiesSpawned += 1;
       this.enemies.push(enemy);
@@ -108,7 +131,7 @@ class Game {
   }
 
   addSecondWave() {
-    if (this.enemiesSpawned < 19) {
+    if (this.enemiesSpawned >= 19) {
       const sweets = new Sweets(this.ctx);
       this.enemiesSpawned += 1;
       this.sweets.push(sweets);
@@ -116,43 +139,29 @@ class Game {
   }
 
   addThirdWave() {
-    if (this.enemiesSpawned < 19) {
+    if (this.enemiesSpawned >= 38) {
       const bbq = new Bbq(this.ctx);
       this.enemiesSpawned += 1;
       this.bbqs.push(bbq);
     }
   }
 
-  addFruits(){
-    if(this.tick2 > Math.random() * 300 - 150 ){
-      const fruit = new Fruit(this.ctx)
-      this.fruitsSpawned += 1
-      this.fruits.push(fruit)
-      if(this.fruitsSpawned > 20){
-        return
+  addFruits() {
+    if (this.tick2 > Math.random() * 300 - 150) {
+      const fruit = new Fruit(this.ctx);
+      this.fruitsSpawned += 1;
+      this.fruits.push(fruit);
+      if (this.fruitsSpawned > 20) {
+        return;
       }
-
-      console.log(this.fruitsSpawned)
-
     }
-
-
   }
 
   waveControl() {
-    if (
-      this.enemiesSpawned === 20 &&
-      this.numberOfEnemiesFinished < 5 &&
-      this.numberOfKills >= 15
-    ) {
-      this.wave += 1;
+    if (this.enemiesSpawned >= 19) {
+      this.wave = 1;
     }
-    if (
-      this.enemiesSpawned === 40 &&
-      this.numberOfEnemiesFinished < 5 &&
-      this.numberOfKills >= 30
-    )
-      this.wave += 1;
+    if (this.enemiesSpawned >= 38) this.wave = 2;
   }
 
   ///////////////////////////////////////////////////////////////////
@@ -165,7 +174,7 @@ class Game {
       // check horizontal and moving right
 
       if (
-        x <= this.board.waypoints[i + 1].x + 50 &&
+        x <= this.board.waypoints[i + 1].x &&
         x >= this.board.waypoints[i].x &&
         y <= this.board.waypoints[i].y + 50 &&
         y >= this.board.waypoints[i].y - 50
@@ -175,17 +184,17 @@ class Game {
 
       // check vertical and moving down
       else if (
-        y <= this.board.waypoints[i + 1].y + 50 &&
+        y <= this.board.waypoints[i + 1].y &&
         y >= this.board.waypoints[i].y &&
         x <= this.board.waypoints[i].x + 50 &&
-        x >= this.board.waypoints[i].x - 50
+        x >= this.board.waypoints[i].x
       ) {
         return true; // this.checkCollisions()
       }
 
       // check horizonal and moving left
       else if (
-        x >= this.board.waypoints[i + 1].x + 50 &&
+        x >= this.board.waypoints[i + 1].x &&
         x <= this.board.waypoints[i].x &&
         y <= this.board.waypoints[i].y + 50 &&
         y >= this.board.waypoints[i].y - 50
@@ -205,7 +214,6 @@ class Game {
         enemies.forEach(enemy => {
           tower.isInRange(enemy);
           enemy.health - +tower.damage;
-          console.log(enemy.health);
         });
       });
     }
@@ -227,9 +235,8 @@ class Game {
       if (enemies[i].enemyCrossed()) {
         this.numberOfEnemiesFinished += 1;
         this.enemies.splice(i, 1);
-        console.log(this.numberOfEnemiesFinished);
       }
-      if (this.numberOfEnemiesFinished > 5) {
+      if (this.numberOfEnemiesFinished > 5 || this.player.calories > 1500) {
         this._gameOver();
       }
     }
@@ -263,9 +270,8 @@ class Game {
     });
 
     if (col) {
-      this.player.lives -= 0.1;
+      this.player.calories += 20;
       if (this.player.lives <= 0) this._gameOver();
-      console.log("entra");
     }
   }
   playerColWithHealthyFood() {
@@ -273,24 +279,25 @@ class Game {
     //   return fruit.collideHealthyFood(this.player)
     // })
     const col = this.fruits.some(fruit => {
-      return fruit.collideEnemy(this.player)
+      return fruit.collideEnemy(this.player);
     });
 
     if (col) {
       this.player.lives + 1;
-      
+
       this.fruits.forEach(fruit => {
         fruit.health -= 1;
         if (fruit.health <= 0) {
-          this.fruits.splice(fruit, 1)
+          this.player.calories -= 100;
+          this.fruitsEaten += 1;
+          this.fruits.splice(fruit, 1);
         }
-      })
-      
+      });
     }
   }
 
   /////////////////////////////////////////////////////////////////////
-  //////////
+  //////////SCORE
   ///////////////////////////////////////////////////////////////////
 
   score() {
@@ -301,6 +308,20 @@ class Game {
     }
   }
 
+  scoreAddToHtml() {
+    const health = document.getElementById("health");
+    health.innerText = this.player.lives;
+
+    const calories = document.getElementById("calories");
+    calories.innerText = this.player.calories;
+
+    const healthy = document.getElementById("healthy");
+    healthy.innerText = this.fruitsEaten;
+
+    const unhealthy = document.getElementById("unhealthy");
+    unhealthy.innerText = this.numberOfKills;
+  }
+
   ///////////////////////////////////////////////////////////
   ////////GAME OVER ////////////////////////////////////////7
   ////////////////////////////////////////////////////////77
@@ -308,12 +329,22 @@ class Game {
   _gameOver() {
     clearInterval(this.intervalId);
 
-    this.ctx.font = "40px Comic Sans MS";
+    this.ctx.font = "40px Arial";
     this.ctx.textAlign = "center";
     this.ctx.fillText(
       "GAME OVER",
       this.ctx.canvas.width / 2,
-      this.ctx.canvas.height / 2
+      this.ctx.canvas.height - 600
+    );
+    this.ctx.fillText(
+      "YOU HAVE EATEN " + this.fruitsEaten + " HEALTHY MEALS",
+      this.ctx.canvas.width / 2,
+      this.ctx.canvas.height - 500
+    );
+    this.ctx.fillText(
+      "YOU HAVE " + this.player.calories + "CALORIES",
+      this.ctx.canvas.width / 2,
+      this.ctx.canvas.height - 400
     );
   }
 }

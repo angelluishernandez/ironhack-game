@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-
+    <divnk href="https://fonts.googleapis.com/css?family=Modak&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="stylesheets/main.css" />
 
     <title>IronHack TD</title>
@@ -12,34 +12,46 @@
   </head>
   <body>
     <div id="game-board">
-      <ul>
-        <li>
-          <h2>Player health</h2>
-          <p></p>
-        </li>
-        <li>
-          <h2>Unhealthy food left</h2>
-          <p></p>
-        </li>
-        <li>
-          <h2>Healthy food</h2>
-          <p></p>
-        </li>
-        <li>
-          <h2>Unhealthy in the oven</h2>
-          <p></p>
-        </li>
-        <li>
+      <div>
+       
+          <div class= "score-box-left">
+            <h3>Player lives</h3>
+            <p id="health">0</p>
+          </div>
+
+          <div class= "score-box-left">
+            <h3>Healthy food eaten</h3>
+            <p id="healthy">0</p>
+          </div>
+          <div id="restart"><button class="restart">Restart</button></div>
+      </div>
+      <div>
+        <canvas
+          id="canvas"
+          class="my-canvas"
+          width="1000"
+          height="800"
+        ></canvas>
+      </div>
+      <div>
+       
+          <div class= "score-box-right">
+            <h3>Your calories</h3>
+            <p id="calories">0</p>
+          </div>
+          <div class= "score-box-right">
+            <h3>Unhealthy in the oven</h3>
+            <p id="unhealthy">0</p>
+          </div>
+          <div id="start"><button class="start">Start Game</button></div>
         
-        </li>
-      </ul>
-      <canvas id="canvas" class="my-canvas" width="1000" height="800"></canvas>
+      </div>
     </div>
-    <div id="btn"><button>Start Game</button></div>
+    
     <script src="code/player.js"></script>
     <script src="code/enemy.js"></script>
     <script src="code/fruits.js"></script>
-    
+
     <script src="code/sweets.js"></script>
     <script src="code/bbq.js"></script>
     <script src="code/bullet.js"></script>
