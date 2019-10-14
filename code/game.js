@@ -67,25 +67,13 @@ class Game {
           this.addEnemy();
         }
         if (this.wave === 1) {
-          this.ctx.font = "40px Arial";
-          this.ctx.textAlign = "center";
-          this.ctx.fillText(
-            "Next round in starts",
-            "in 3 seconds",
-            this.ctx.canvas.width / 2,
-            this.ctx.canvas.height /2
-          );
+         
+         
           setTimeout(this.addSecondWave(), 4000);
         }
         if (this.wave === 2) {
-          this.ctx.font = "40px Arial";
-          this.ctx.textAlign = "center";
-          this.ctx.fillText(
-            "Next round in starts",
-            "in 3 seconds",
-            this.ctx.canvas.width / 2,
-            this.ctx.canvas.height /2
-          );
+         
+         
           setTimeout(this.addThirdWave());
         }
       }
@@ -342,7 +330,7 @@ class Game {
       this.ctx.canvas.height - 500
     );
     this.ctx.fillText(
-      "YOU HAVE " + this.player.calories + "CALORIES",
+      "YOU HAVE " + this.player.calories + " CALORIES",
       this.ctx.canvas.width / 2,
       this.ctx.canvas.height - 400
     );
