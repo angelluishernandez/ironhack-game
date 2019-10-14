@@ -24,7 +24,7 @@ class Bbq extends Enemy{
     this.y = 100;
     this.w = 50;
     this.h = 50;
-    this.health = 250;
+    this.health = 400;
     this.img = new Image();
     this.img.src =
       "./imgs/bbq" + (Math.floor(Math.random() * 5) + 1) + ".png";

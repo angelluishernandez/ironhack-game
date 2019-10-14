@@ -36,8 +36,15 @@ class Game {
     ////////////
     //Score
     this.caloriesBurned = 0;
+
+    //////
+    // Audio
+
+    this.audio = new Audio("./audio/destinazione_altrove_-_Funk_Interlude .mp3")
   }
   run() {
+
+    this.audio.play()
     this.intervalId = setInterval(() => {
       this.clear();
       this.draw();
@@ -63,6 +70,7 @@ class Game {
       console.log(this.numberOfKills);
       if (this.tick++ > 100) {
         this.tick = 0;
+        this.player.hunger++
         if (this.wave === 0) {
           this.addEnemy();
         }
@@ -80,6 +88,7 @@ class Game {
       if (this.tick2++ > 150) {
         this.tick2 = 0;
         this.addFruits();
+        
       }
     }, 1000 / 60);
   }
@@ -224,7 +233,7 @@ class Game {
         this.numberOfEnemiesFinished += 1;
         this.enemies.splice(i, 1);
       }
-      if (this.numberOfEnemiesFinished > 5 || this.player.calories > 1500) {
+      if (this.numberOfEnemiesFinished > 5 || this.player.calories > 1500 || this.player.hunger >= 100) {
         this._gameOver();
       }
     }
@@ -308,6 +317,9 @@ class Game {
 
     const unhealthy = document.getElementById("unhealthy");
     unhealthy.innerText = this.numberOfKills;
+
+    const hunger = document.getElementById("hunger")
+    hunger.innerText = this.player.hunger
   }
 
   ///////////////////////////////////////////////////////////
