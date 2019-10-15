@@ -38,10 +38,8 @@ class Tower {
     const distY = this.y - enemy.y - enemy.w / 2;
     this.inRange = Math.sqrt(distX * distX + distY * distY);
     if (this.inRange <= 90) {
-      console.log(this.inRange, distX, distY);
       this.bullets.push(new Bullet(this.ctx, this.x, this.y, enemy));
 
-      // console.log(this.bullets.length);
     }
 
     return this.inRange;

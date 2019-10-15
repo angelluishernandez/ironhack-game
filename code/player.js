@@ -10,7 +10,7 @@ class Player {
     this.lives = 5;
     this.x = 0;
     this.y = 0;
-    this.w = 60;
+    this.w = 80;
     this.h = 100;
     this.vx = 0;
     this.vy = 0;

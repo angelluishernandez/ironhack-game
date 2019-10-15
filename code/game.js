@@ -24,6 +24,7 @@ class Game {
     this.numberOfKills = 0;
     this.lives = 5;
     this.enemiesSpawned = 0;
+   
     // Healthy food
     this.fruits = [];
     this.fruitsSpawned = 0;
@@ -65,9 +66,7 @@ class Game {
       this.playerColWithEnemy(this.sweets);
       this.playerColWithEnemy(this.bbqs);
       this.playerColWithHealthyFood();
-      console.log(this.wave);
-      console.log(this.enemiesSpawned);
-      console.log(this.numberOfKills);
+      console.log(this.numberOfEnemiesFinished);
       if (this.tick++ > 100) {
         this.tick = 0;
         this.player.hunger++
@@ -83,6 +82,7 @@ class Game {
          
          
           setTimeout(this.addThirdWave());
+          
         }
       }
       if (this.tick2++ > 150) {
@@ -152,6 +152,14 @@ class Game {
         return;
       }
     }
+  }
+  wavesEnded(){
+    if(this.enemiesSpawned > 57){
+      this.enemiesSpawned = 0
+      this.wave = 0
+    }
+
+
   }
 
   waveControl() {
@@ -229,12 +237,13 @@ class Game {
   //////////////////////////////////////
   enemiesEnded(enemies) {
     for (let i = 0, l = enemies.length - 1; i < l; i++) {
-      if (enemies[i].enemyCrossed()) {
+      if (enemies[i].x >= 1001) {
         this.numberOfEnemiesFinished += 1;
+        this.player.lives -= 1
         this.enemies.splice(i, 1);
       }
-      if (this.numberOfEnemiesFinished > 5 || this.player.calories > 1500 || this.player.hunger >= 100) {
-        this._gameOver();
+      if (this.numberOfEnemiesFinished > 5 || this.player.calories > 1500 || this.player.hunger >= 100 || this.player.lives <= 0) {
+        this.gameOver();
       }
     }
     enemies.forEach(enemy => {
@@ -244,6 +253,8 @@ class Game {
       }
     });
   }
+
+
 
   removeFirstTower() {
     if (this.towers.length > 5 && this.wave === 0) {
@@ -268,7 +279,6 @@ class Game {
 
     if (col) {
       this.player.calories += 20;
-      if (this.player.lives <= 0) this._gameOver();
     }
   }
   playerColWithHealthyFood() {
@@ -287,6 +297,7 @@ class Game {
         if (fruit.health <= 0) {
           this.player.calories -= 100;
           this.fruitsEaten += 1;
+          this.player.hunger -= 5
           this.fruits.splice(fruit, 1);
         }
       });
@@ -326,7 +337,7 @@ class Game {
   ////////GAME OVER ////////////////////////////////////////7
   ////////////////////////////////////////////////////////77
 
-  _gameOver() {
+  gameOver() {
     clearInterval(this.intervalId);
 
     this.ctx.font = "40px Arial";

@@ -14,7 +14,6 @@ window.onload = function startGame() {
       const coordinates = getMousePosition(e);
       if (!game.checkIfInPath(coordinates.x, coordinates.y)) {
         game.towers.push(new Tower(game.ctx, coordinates.x, coordinates.y));
-        console.log(coordinates);
       }
     },
     false
