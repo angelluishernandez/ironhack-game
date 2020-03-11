@@ -1,12 +1,9 @@
 class Sweets extends Enemy {
   constructor(ctx, speed, enemyFinished, isDead) {
-   
-    super(
-      
+   super(      
       speed,
       enemyFinished,
-      isDead,
-      
+      isDead,      
     );
 
     this.ctx = ctx;
